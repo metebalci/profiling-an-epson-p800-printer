@@ -12,7 +12,7 @@ I follow the following procedure:
 
 - I print the TIF targets using [Adobe Photoshop](https://en.wikipedia.org/wiki/Adobe_Photoshop) by setting Printer manages color, disabling color management in the printer driver and setting top-left offset to 0.
 
-- After the prints are dried, I measure them using [X-Rite i1iSis XL](https://xritephoto.com/documents/literature/en/L11-213_iSis_Brochure_en.pdf) in dual mode, with both M0 and M2 illuminants. The measurements are saved as iProfiler CGATS files, M0.txt and M2.txt.
+- After the prints are dried, I measure them using [X-Rite i1iSis XL](https://xritephoto.com/documents/literature/en/L11-213_iSis_Brochure_en.pdf) in dual mode, with both M0 and M2 illuminants. The measurements are saved as iProfiler CGATS files, M0.txt and M2.txt. I usually measure the targets after ~1h to be sure they can be read by i1iSis, and do a final measurement after minimum 24h.
 
 - I use [Argyll CMS colprof utility](https://www.argyllcms.com/) utility to create three profiles: one for M0 measurements, one for M0 measurements with FWA compensation and one for M2 measurements.
 
