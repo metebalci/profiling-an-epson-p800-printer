@@ -6,7 +6,7 @@ I follow the following procedure:
 
 - I create the color targets using [Argyll CMS targen utility](https://www.argyllcms.com/). I typically use enough patches to cover 4x A4 pages.
 
-- I use [my scaleti1 utility]() to scale the RGB values in ti1 file from 0-100 to 0-255. This creates a patchset.txt file.
+- I use [my scaleti1rgb utility](scaleti1rgb.py) to scale the RGB values in ti1 file from 0-100 to 0-255. This creates a patchset.txt file. This utility is written by ChatGPT.
 
 - I create the TIF targets using [X-Rite iProfiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler) by loading patchset.txt. I set the margin to printer's minimum margin values for top and sides (3mm) and use minimum patch size of 9mm width (50% larger than minimum 6mm for i1iSis) and 6.6mm height (10% larger than minimum 6mm for i1iSis). Because the bottom reduced quality area is slightly (33mm vs. 38mm) larger than the top, I increase the bottom margin value to 6mm. The header length is the default value of 32mm. Depending on how the actual patches are layout on the pages, I increase the size of the patch while still fitting them to the same number of pages.
 
