@@ -10,7 +10,7 @@ I follow the following procedure:
 
 - I create the TIF targets using [X-Rite iProfiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler) by loading patchset.txt. I set the margin to printer's minimum margin values for top and sides (3mm) and use minimum patch size of 9mm width (50% larger than minimum 6mm for i1iSis) and 6.6mm height (10% larger than minimum 6mm for i1iSis). Because the bottom reduced quality area is slightly (33mm vs. 38mm) larger than the top, I increase the bottom margin value to 6mm. The header length is the default value of 32mm. Depending on how the actual patches are layout on the pages, I increase the size of the patch while still fitting them to the same number of pages.
 
-- I print the TIF targets using Adobe Photoshop by setting Printer manages color, disabling color management in the printer driver and setting top-left offset to 0.
+- I print the TIF targets using [Adobe Photoshop](https://en.wikipedia.org/wiki/Adobe_Photoshop) by setting Printer manages color, disabling color management in the printer driver and setting top-left offset to 0.
 
 - After the prints are dried, I measure them using [X-Rite i1iSis XL](https://xritephoto.com/documents/literature/en/L11-213_iSis_Brochure_en.pdf) in dual mode, with both M0 and M2 illuminants. The measurements are saved as iProfiler CGATS files, M0.txt and M2.txt.
 
