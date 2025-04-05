@@ -28,7 +28,7 @@ For A4, I use:
 - 256 gray patches (-g)
 
 ```
-targen -v -d2 -G -e16 -B16 -g256 -f2852 -w -W patchset2852.
+targen -v -d2 -G -e16 -B16 -g256 -f2852 patchset2852.
 ```
 
 I reached the magical number 2852 by checking the layout in iProfiler multiple times.
