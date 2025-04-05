@@ -22,7 +22,7 @@ This repository contains ICC profiles I created for Epson SureColor P800 (SC-P80
 
 For A4, I use:
 
-- 2852 OPFS patches (-f)
+- 2852 OFPS (full spread) patches (-f)
 - 16 white patches (-e)
 - 16 black patches (-B)
 - 256 gray patches (-g)
