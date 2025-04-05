@@ -4,7 +4,7 @@ This repository contains ICC profiles I created for Epson SureColor P800 (SC-P80
 
 I follow the following procedure:
 
-- I create the color targets using [Argyll CMS targen utility](https://www.argyllcms.com/). I typically use enough patches to cover 4x A4 pages (or 2x A3 pages).
+- I create the color targets using [Argyll CMS targen utility](https://www.argyllcms.com/). I typically use enough patches to cover 4x A4 pages.
 
 - I use [my scaleti1 utility]() to scale the RGB values in ti1 file from 0-100 to 0-255. This creates a patchset.txt file.
 
