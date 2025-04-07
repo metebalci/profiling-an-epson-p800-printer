@@ -50,6 +50,8 @@ This repository only contains ICC profiles for SC-P800, but I decided to still k
 
 The measurement is done with a specific paper and actually with a specific ink. However, I consider the ink as part of the printer, so what I mean by SC-P800 is that it is using the original inks (Epson UltraChrome HD). Also, the layout is not important for the measurement. It already contains information about the patch set but to easily understand the connection I extend the patch set name. Thus, the measurement file name is `patch_set_basename_PAPER_M0orM2.txt`. For example, `i1_2033_Epson_Archival_Matte_M0.txt`. Since I always measure in dual scan mode, there are always an M0 and an M2 measurement file.
 
+I do not plan to keep all of the temporary files (measurements after ~1h), but if I do, and also internally, I add this to the end of the file name, e.g. `i1_2033_Epson_Archival_Matte_M0_2h.txt` for a measurement after I did after 2h. For the final versions, measurements after 24h, I do not add any suffix.
+
 ## Profiles
 
 # Patch Set and Test Chart Design
