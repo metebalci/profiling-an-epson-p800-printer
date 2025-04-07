@@ -20,12 +20,19 @@ ICC profile creation steps are: creating the patch set, creating and printing th
 
 # Patchset and Test Chart Design
 
-There are different patch sets, standard or generated on the fly. Main parameters are:
+A patchset ideally includes enough number of important colors that samples the printer/ink/paper behavior to create an ICC profile. For example, the following points matter:
 
-- does it regularly sample the RGB cube (e.g. take a value every X step), or does it randomly sample (e.g. OFPS in argyllcms)
-- how many white and black patches
-- how many neutral (gray) patches
-- how many near-neutral (gray) patches
+- how many white and black patches. Because white and black are extra important, the measurement error should be minimized.
+- how many neutral (gray) patches. Because creating gray levels from color inks can be problematic.
+- is near-neutral (gray) patches needed ? if so, how many. Because near-neutral colors are important in real photographs.
+- how the remaining patches are selected/sampled, and how many.
+
+At the moment all patchsets used for ICC profile creation include a different numbers of white, black and neutral patches. Some new patchsets also include extra near-neutral patches particularly if the other patches are regularly sampled. The main question is how the remaining patches are selected and how many of them are required.
+
+The problem is also complicated by the fact that it is not possible to have a lot of patches since they have to be printed (consumes paper and ink) and measured (takes time). For a home user, or a proconsumer, this means A4 or A3 papers (A4 can contain ~1000 patches), and a simple spectrometer to measure the charts manually. For a professional or commercial business, this means larger papers, automated chart readers (~5K USD) and/or printers with embedded spectrometers (starts from ~5K USD).
+
+For the remaining patches, there are two main methods. One is to regularly sample the RGB cube. This means to sample for example every 16th point in the cube, that is 16 points in each direction (RGB), thus 16x16x16=4096 points in total. The other method is to randomly sample the RGB cube but iteratively change the samples so the distance between them are similar. The first method is used by everything I saw until now, both the standard test charts and the ones created by a software like i1Profiler. The second method is used only by Argyll CMS.
+
 
 The simple targets use small a small patchset, including regular sampling with only one or two white and black patches and maybe a few neutral patches. More advanced targets use a large patchset, including regular or random sampling, with more white and black and many more neutral patches. With regular sampling, for example iProfiler at the moment, also creates many near-netural patches.
 
