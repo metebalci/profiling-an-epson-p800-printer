@@ -4,17 +4,34 @@ This repository contains ICC profiles I created for Epson SureColor P800 (SC-P80
 
 # Overview
 
-- I create the patch sets using [Argyll CMS targen utility](https://www.argyllcms.com/). I typically use enough patches to cover 4x A4 pages. This creates a patchset.ti1 file. Since I am using X-Rite i1iSis XL Chart Reader, I can use A3 or A3+ test charts, but I am mostly using A4 papers.
+- I create the patch sets using [Argyll CMS targen utility](https://www.argyllcms.com/). I typically use enough patches to cover 2x A4 pages. This creates a patchset.ti1 file. Since I am using X-Rite i1iSis XL Chart Reader, I can use A3 or A3+ test charts, but I am mostly using A4 papers.
 
-- I use [my scaleti1rgb utility](scaleti1rgb.py) to scale the RGB values in ti1 file from 0-100 to 0-255. This creates a patchset.txt file. I guided ChatGPT to write this utility.
+- I use [my scaleti1rgb utility](scaleti1rgb.py) to scale the RGB values in ti1 file from 0-100 (what targen generates) to 0-255 (what i1Profiler expects). This creates a patchset.txt file. I guided ChatGPT to write this utility.
 
-- I create the test charts (TIF files) using [X-Rite iProfiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler) by loading patchset.txt. i1Profiler is not a free software, but this feature can be freely used.
+- I create the test charts (TIF files) using [X-Rite i1Profiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler) by loading patchset.txt. i1Profiler is not a free software, but this feature can be freely used.
 
-- I print the TIF test charts using [Adobe Photoshop](https://en.wikipedia.org/wiki/Adobe_Photoshop) by setting Printer manages color, disabling color management in the printer driver and setting top-left offset to 0.
+- I print the TIF test charts using Color Sync Utility on macOS.
 
-- After the prints are dried, I measure the printed test charts using [X-Rite i1iSis XL Automated Chart Reader](https://xritephoto.com/documents/literature/en/L11-213_iSis_Brochure_en.pdf) in dual scan mode (M0 and M2), using iProfiler (this feature can also be used freely). The measurements are saved as iProfiler CGATS files, M0.txt and M2.txt. I usually measure the targets after ~1h to be sure they can be read by i1iSis, and do a final measurement after minimum 24h.
+- After the prints are dried, I measure the printed test charts using [X-Rite i1iSis XL Automated Chart Reader](https://xritephoto.com/documents/literature/en/L11-213_iSis_Brochure_en.pdf) in dual scan mode (M0 and M2), using i1Profiler (this feature can also be used freely). The measurements are saved as i1Profiler CGATS files, M0.txt and M2.txt. I usually measure the targets after ~1h to be sure they can be read by i1iSis, and do a final measurement after minimum 24h.
 
 - I use [Argyll CMS colprof utility](https://www.argyllcms.com/) utility to create three profiles: one for M0 measurements, one for M0 measurements with FWA compensation and one for M2 measurements.
+
+# Patchset and Test Chart Design
+
+There are different patch sets, standard or generated on the fly. Main parameters are:
+
+- does it regularly sample the RGB cube (e.g. take a value every X step), or does it randomly sample (e.g. OFPS in argyllcms)
+- how many white and black patches
+- how many neutral (gray) patches
+- how many near-neutral (gray) patches
+
+The simple targets use small a small patchset, including regular sampling with only one or two white and black patches and maybe a few neutral patches. More advanced targets use a large patchset, including regular or random sampling, with more white and black and many more neutral patches. With regular sampling, for example iProfiler at the moment, also creates many near-netural patches.
+
+As far as I can see, argyllcms is the only software using random sampling and the idea comes from [Adaptive color-printer modeling using regularized linear splines, Don Bone, 1993.](https://sci-hub.se/10.1117/12.149033). It says "the ... technique (MAMAS) is described and tested using simulations. With measurement noise level, delta, much less than the desired accuracy, alpha, the technique proves to have significant advantages over regular sampling approaches.". 
+ 
+I created a (Google) sheet to find maximum number of patches that can be laid on a single paper considering all variables including the printer parameters such as margins and reduced quality areas, the paper size and the i1iSis chart specifications. Using the minumums in chart specifications (which corresponds to tight margin setting in i1Profiler and 6x6mm patch size), 1020 patches fit to a single A4 page. This considers the reduced quality areas of the printer (patches are not laid out there)
+
+# Printing the Test Chart
 
 # Details
 
@@ -22,16 +39,14 @@ This repository contains ICC profiles I created for Epson SureColor P800 (SC-P80
 
 For A4, I use:
 
-- 2852 OFPS (full spread) patches (-f)
-- 16 white patches (-e)
-- 16 black patches (-B)
+- 8 white patches (-e)
+- 8 black patches (-B)
 - 256 gray patches (-g)
+- 2040 total OFPS (full spread) patches (-f)
 
 ```
-targen -v -d2 -G -e16 -B16 -g256 -f2852 patchset2852.
+targen -v -d2 -G -e8 -B8 -g256 -f2040 patchset2040
 ```
-
-I reached the magical number 2852 by checking the layout in iProfiler multiple times.
 
 ## iProfiler
 
