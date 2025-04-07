@@ -43,7 +43,7 @@ I generated a few patch sets to reuse.
 , for 1x, 2x and 3x A4 pages, 1x A3 page and 1x A3+ page. For 1x A4, I generated a few alternatives with different number of gray patches.
 
 | name | # of white (-e) | # of black (-B) | # of gray (-g) | total # of patches (-f) | pages |
-|---|---|---|---|---|
+| ---- | --------------- | --------------- | -------------- | ----------------------- | ----- |
 | ac_wb4_g32_1020   |  4 |  4 |  32 | 1020 | 1x A4 |
 | ac_wb4_g64_1020   |  4 |  4 |  64 | 1020 | 1x A4 |
 | ac_wb8_g128_2040  |  8 |  8 | 128 | 2040 | 2x A4 |
