@@ -14,7 +14,7 @@ ICC profile creation steps are: creating the patch set, creating and printing th
 
 - I use ColorSync utility in macOS to print the test charts.
 
-- After the prints are dried, I measure the printed test charts using [X-Rite i1iSis XL Automated Chart Reader](https://xritephoto.com/documents/literature/en/L11-213_iSis_Brochure_en.pdf) in dual scan mode (M0 and M2), using i1Profiler. I save the measurements to i1Profiler CGATS files, M0.txt and M2.txt. I usually measure the targets once after ~1h to be sure they can be read by i1iSis, and do the final measurement after 24h.
+- After the prints are dried, I measure the printed test charts using [X-Rite i1iSis XL Automated Chart Reader](https://xritephoto.com/documents/literature/en/L11-213_iSis_Brochure_en.pdf) in dual scan mode (M0 and M2), using i1Profiler. I save the measurements in i1Profiler CGATS Spectral format, and this creates two files, M0.txt and M2.txt. I usually measure the targets once after ~1h to be sure they can be read by i1iSis, and do the final measurement after 24h.
 
 - I use [Argyll CMS colprof utility](https://www.argyllcms.com/) utility to create three profiles: one for M0 measurements without FWA compensation, one for M0 measurements with FWA compensation and one for M2 measurements without FWA compensation.
 
@@ -40,7 +40,7 @@ The test chart is created in iProfiler by setting up:
 - A4, A3 or A3+ as page size, portrait page orientation and test chart margins as the minimum margins of the printer (3mm on all sides for SC-P800)
 - patch width and height as required, header length always 32mm
 
-Thus, a test chart layout depends on the page size, printer and patch size. The test chart file name is an extension of the patch set, adding the page size, printer and patch size to that. For example, `i1_2033.txt` patch set might have a test chart base name `i1_2033_A4_P800_6x6` meaning an A4 page on SC-P800 and a patch size of 6x6mm. There is going to be a `.txf` file with this basename, and also one or more `.tif` files for each page of the color charts. When there are multiple pages, the basename also has a suffix `_X` where X is the page number. For example, for the example before, `i1_2033_A4_P800_6x6_1.tif` would be the first page of this color chart. The `.txf` file can be used to load this color chart back to i1Profiler before doing a measurement because the measurement needs to know both the patch set (txf file contains the patch set values) and the layout of color chart.
+Thus, a test chart layout depends on the page size, printer and patch size. The test chart file name is an extension of the patch set, adding the page size, printer and patch size to that. For example, `i1_2033.txt` patch set might have a test chart base name `i1_2033_A4_P800_6x6` meaning an A4 page on SC-P800 and a patch size of 6x6mm. There is going to be a `.txf` file with this basename, and also one or more `.tif` files for each page of the color charts. When there are multiple pages, the basename also has a suffix `_X_Y` where X is the page number and Y is the total number of pages. For example, for the example before, `i1_2033_A4_P800_6x6_1_2.tif` would be the first page of this two pages color chart. The `.txf` file can be used to load this color chart back to i1Profiler before doing a measurement because the measurement needs to know both the patch set (txf file contains the patch set values) and the layout of color chart.
 
 i1Profiler by default adds the base name of the test chart to the test chart itself. It is double check. It is also possible to add layout information a barcode that can be automatically read by i1iSis but I am not using this feature.
 
@@ -48,7 +48,7 @@ This repository only contains ICC profiles for SC-P800, but I decided to still k
 
 ## Measurements
 
-The measurement is done with a specific paper and actually with a specific ink. However, I consider the ink as part of the printer, so what I mean by SC-P800 is that it is using the original inks (Epson UltraChrome HD). Also, the layout is not important for the measurement. It already contains information about the patch set but to make a correlation I extend the patch set name. Thus, the measurement file name is `patch_set_name_PAPER_M0orM2.txt`. For example, `i1_2033_Epson_Archival_Matte_M0.txt`. Since I always measure in dual scan mode, there are always an M0 and an M2 measurement file.
+The measurement is done with a specific paper and actually with a specific ink. However, I consider the ink as part of the printer, so what I mean by SC-P800 is that it is using the original inks (Epson UltraChrome HD). Also, the layout is not important for the measurement. It already contains information about the patch set but to easily understand the connection I extend the patch set name. Thus, the measurement file name is `patch_set_basename_PAPER_M0orM2.txt`. For example, `i1_2033_Epson_Archival_Matte_M0.txt`. Since I always measure in dual scan mode, there are always an M0 and an M2 measurement file.
 
 ## Profiles
 
