@@ -32,13 +32,13 @@ ac patch sets are also always scrambled but targen adds the gray patches to the 
 
 The patch sets are independent of the printer, paper or ink used. Hence, the name contains no such information.
 
-I generated a few patch sets to reuse. 
+I generated a few patch sets. 
 
-- The default patch set in the current i1Profiler (3.8.4) (when Advanced > Printer > Profiling is opened) has 2033 patches. The scrambled (randomized) set is [i1_2033.txt](). Its patches are semi-regularly sampled including neutral and near-neutral patches.
+- I use only one patch set from i1Profiler. It is the default patch set in the current i1Profiler (3.8.4) (when Advanced > Printer > Profiling is opened) which has 2033 patches. The scrambled (randomized) set is [i1_2033.txt](). Its patches are semi-regularly sampled including neutral and near-neutral patches (on 3 different axis near neutral axis).
 
 [i3_2033 image]
 
-- With Argyll CMS, I created a few different patch sets.
+- With Argyll CMS, I created a few different patch sets. The ones with 1020 patches are only for testing, I do not think it makes sense to use them for production. The next is 2040 patches
 
 , for 1x, 2x and 3x A4 pages, 1x A3 page and 1x A3+ page. For 1x A4, I generated a few alternatives with different number of gray patches.
 
@@ -46,18 +46,9 @@ I generated a few patch sets to reuse.
 | ---- | --------------- | --------------- | -------------- | ----------------------- | ----- |
 | ac_wb4_g32_1020   |  4 |  4 |  32 | 1020 | 1x A4 |
 | ac_wb4_g64_1020   |  4 |  4 |  64 | 1020 | 1x A4 |
-| ac_wb8_g128_2040  |  8 |  8 | 128 | 2040 | 2x A4 |
-| ac_wb16_g256_3060 | 16 | 16 | 256 | 3060 | 3x A4 |
-| ac_wb16_g256_2420 | 16 | 16 | 256 | 2420 | 1x A3 |
-| ac_wb16_g256_3185 | 16 | 16 | 256 | 3185 | 1x A3+ |
-
-
-| name | # of white (-e) | # of black (-B) | # of gray (-g) | total # of patches (-f) | pages |
-|---|---|---|---|---|
-| ac_wb4_g32_1020   |  4 |  4 |  32 | 1020 | 1x A4 |
-| ac_wb4_g64_1020   |  4 |  4 |  64 | 1020 | 1x A4 |
-| ac_wb8_g128_2040  |  8 |  8 | 128 | 2040 | 2x A4 |
-| ac_wb16_g256_3060 | 16 | 16 | 256 | 3060 | 3x A4 |
+| ac_wb8_g128_2040  |  8 |  8 | 128 | 2040 | 2x A4 (6x6) or 3x A4 (9x6) |
+| ac_wb8_g128_2720  | 16 | 16 | 256 | 2720 | 4x A4 (9x6) |
+| ac_wb16_g256_3060 | 16 | 16 | 256 | 3060 | 3x A4 (6x6) |
 | ac_wb16_g256_2420 | 16 | 16 | 256 | 2420 | 1x A3 |
 | ac_wb16_g256_3185 | 16 | 16 | 256 | 3185 | 1x A3+ |
 
@@ -77,9 +68,9 @@ This repository only contains ICC profiles for SC-P800, but I decided to still k
 
 ## Measurements
 
-The measurement is done with a specific paper and actually with a specific ink. However, I consider the ink as part of the printer, so what I mean by P800 is that it is using the original inks (Epson UltraChrome HD). Also, the layout is not important for the measurement. It already contains information about the patch set but to easily understand the connection I extend the patch set name. Thus, the measurement file name is `patch_set_basename_PRINTER_PAPER_M0orM2.txt`. For example, `i1_2033_P800_Epson_Archival_Matte_M0.txt`. Since I always measure in dual scan mode, there are always an M0 and an M2 measurement file.
+The measurement is done with a specific paper and actually with a specific ink. However, I consider the ink as part of the printer, so what I mean by P800 is that it is using the original inks (Epson UltraChrome HD). Normally, the layout is not important for the measurement. However, because the same patch set with different layouts can be measured (particularly because of different patch sizes), I use the name of test chart and add the paper and the measurement condition to that. Thus, the measurement file name is `test_chart_basename_PAPER_M0orM2.txt`. For example, `i1_2033_A4_P800_6x6_Epson_Archival_Matte_M0.txt`. Since I always measure in dual scan mode, there are always an M0 and an M2 measurement file.
 
-I do not plan to keep all of the temporary files (measurements after ~1h), but if I do, and also internally, I add this to the end of the file name, e.g. `i1_2033_P800_Epson_Archival_Matte_M0_2h.txt` for a measurement after I did after 2h. For the final versions, measurements after 24h, I do not add any suffix.
+I do not plan to keep all of the temporary files (measurements after ~1h), but if I do, and also internally, I add the waiting time to the end of the file name, e.g. `i1_2033_P800_Epson_Archival_Matte_M0_2h.txt`. For the final versions, measurements after 24h, I do not add any waiting time suffix.
 
 ## Profiles
 
