@@ -6,28 +6,57 @@ This repository contains ICC profiles I created for Epson SureColor P800 (SC-P80
 
 ICC profile creation steps are: creating the patch set, creating and printing the test chart, measuring the test chart and creating the ICC profile.
 
-- I create the patchsets using [Argyll CMS targen utility](https://www.argyllcms.com/). This creates a patchset.ti1 file. 
+*i1Profiler is not a free software, but the features I am using below can be used freely in demo mode.*
 
-- I use [my scaleti1rgb utility](scaleti1rgb.py) to scale the RGB values in ti1 file from 0-100 (what targen generates) to 0-255 (what i1Profiler expects). This creates a patchset.txt file. I guided ChatGPT to write this utility.
+- I create the patchsets either using [Argyll CMS](https://www.argyllcms.com/) [targen](https://www.argyllcms.com/doc/targen.html) utility or [X-Rite i1Profiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler). targen creates a patchset.ti1 file and I save the i1Profiler's patchset to a patchset.txt file. If I use targen, then I also use my [scaleti1rgb utility](scaleti1rgb.py) to scale the RGB values in ti1 file from 0-100 (what targen generates) to 0-255 (what i1Profiler expects). This converts the ti1 file to a txt file, patchset.txt. I guided ChatGPT to write this utility.
 
-- I create the test charts (TIF files) using [X-Rite i1Profiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler) by loading patchset.txt. i1Profiler is not a free software, but this feature can be freely used. Since I am using X-Rite i1iSis XL Chart Reader, I can use A3 or A3+ test charts, which is actually a very good thing since A3 can have more patches than 2x A4 and it can be read at one session but I am mostly using A4 papers.
+- I create the test charts (TIF files) using i1Profiler by loading patchset.txt. Since I am using X-Rite i1iSis XL Chart Reader, I can use A4, A3 or A3+ test charts.
 
 - I use ColorSync utility in macOS to print the test charts.
 
-- After the prints are dried, I measure the printed test charts using [X-Rite i1iSis XL Automated Chart Reader](https://xritephoto.com/documents/literature/en/L11-213_iSis_Brochure_en.pdf) in dual scan mode (M0 and M2), using i1Profiler (this feature can also be used freely). The measurements are saved as i1Profiler CGATS files, M0.txt and M2.txt. I usually measure the targets after ~1h to be sure they can be read by i1iSis, and do a final measurement after minimum 24h.
+- After the prints are dried, I measure the printed test charts using [X-Rite i1iSis XL Automated Chart Reader](https://xritephoto.com/documents/literature/en/L11-213_iSis_Brochure_en.pdf) in dual scan mode (M0 and M2), using i1Profiler. I save the measurements to i1Profiler CGATS files, M0.txt and M2.txt. I usually measure the targets once after ~1h to be sure they can be read by i1iSis, and do the final measurement after 24h.
 
-- I use [Argyll CMS colprof utility](https://www.argyllcms.com/) utility to create three profiles: one for M0 measurements, one for M0 measurements with FWA compensation and one for M2 measurements.
+- I use [Argyll CMS colprof utility](https://www.argyllcms.com/) utility to create three profiles: one for M0 measurements without FWA compensation, one for M0 measurements with FWA compensation and one for M2 measurements without FWA compensation.
 
-# Patchset and Test Chart Design
+# Naming
 
-A patchset ideally includes enough number of important colors that samples the printer/ink/paper behavior to create an ICC profile. For example, the following points matter:
+## Patch Sets
+
+The patch sets (ti1 and/or txt) starting with `i1_` is created with i1Profiler, whereas the ones starting with `ac_` are created with targen (Argyll CMS). 
+
+i1 patch sets are always scrambled (patch positions are randomized) and the only variable is the number of patches. Thus, the file names are always in the form `i1_XXXX.txt` whereas XXXX is a number (and probably always a 4 digit number).
+
+ac patch sets are also always scrambled but targen adds the gray patches to the beginning of the set, so they will be seen in order on the first page. The variables are the number of white, black, gray and the total number of patches. I always keep the number of white patches equal to black patches. Thus, the file names are always in the form `ac_wbXX_gYYY_ZZZZ`. XX, YYY and ZZZZ are numbers, whereas XX can be one or two digits, YYY can be two or three digits and ZZZZ is probably always 4 digits.
+
+The patch sets are independent of the printer, paper or ink used. Hence, the name contains no such information.
+
+## Test Charts
+
+The test chart is created in iProfiler by setting up:
+
+- i1iSis XL as device and enabling tight margins
+- A4, A3 or A3+ as page size, portrait page orientation and test chart margins as the minimum margins of the printer (3mm on all sides for SC-P800)
+- patch width and height as required, header length always 32mm
+
+Thus, a test chart layout depends on the page size, printer and patch size. The test chart file name is an extension of the patch set, adding the page size, printer and patch size to that. For example, `i1_2033.txt` patch set might have a test chart base name `i1_2033_A4_P800_6x6` meaning an A4 page on SC-P800 and a patch size of 6x6mm. There is going to be a `.txf` file with this basename, and also one or more `.tif` files for each page of the color charts. When there are multiple pages, the basename also has a suffix `_X` where X is the page number. For example, for the example before, `i1_2033_A4_P800_6x6_1.tif` would be the first page of this color chart. The `.txf` file can be used to load this color chart back to i1Profiler before doing a measurement because the measurement needs to know both the patch set (txf file contains the patch set values) and the layout of color chart.
+
+This repository only contains ICC profiles for SC-P800, but I decided to still keep the printer model in the base name to eliminate confusion.
+
+## Measurements
+
+
+# Patch Set and Test Chart Design
+
+For an RGB printer, we would like to find an RGB color (device space), that corresponds to the actual color we have e.g. in a photograph. This transformation is what a printer (output) ICC profile does.
+
+A patch set is used to reconstruct the printer/ink/paper response. Since the response is unknown, a patch set ideally includes enough number of important points/samples/colors to be able to construct the printer's response with less error than the measurement error. For a patch set, the following points are important:
 
 - how many white and black patches. Because white and black are extra important, the measurement error should be minimized.
 - how many neutral (gray) patches. Because creating gray levels from color inks can be problematic.
 - is near-neutral (gray) patches needed ? if so, how many. Because near-neutral colors are important in real photographs.
 - how the remaining patches are selected/sampled, and how many.
 
-At the moment all patchsets used for ICC profile creation include a different numbers of white, black and neutral patches. Some new patchsets also include extra near-neutral patches particularly if the other patches are regularly sampled. The main question is how the remaining patches are selected and how many of them are required.
+At the moment all patch sets used for ICC profile creation include a different numbers of white, black and neutral patches. Some new patch sets also include extra near-neutral patches particularly if the other patches are regularly sampled. The main question is how the remaining patches are selected and how many of them are required.
 
 The problem is also complicated by the fact that it is not possible to have a lot of patches since they have to be printed (consumes paper and ink) and measured (takes time). For a home user, or a proconsumer, this means A4 or A3 papers (A4 can contain ~1000 patches), and a simple spectrometer to measure the charts manually. For a professional or commercial business, this means larger papers, automated chart readers (~5K USD) and/or printers with embedded spectrometers (starts from ~5K USD).
 
@@ -35,17 +64,17 @@ Many ICC profiling services use 1K or 2K patches (and rarely 4-5K). I can see fo
 
 For the remaining patches, there are two main methods. One is to regularly sample the RGB cube. This means to sample for example every 16th point in the cube, that is 16 points in each direction (RGB), thus 16x16x16=4096 points in total. The other method is to randomly sample the RGB cube but iteratively change the samples so the distance between them are similar. The first method is used by everything I saw until now, both the standard test charts and the ones created by a software like i1Profiler. The second method is used only by Argyll CMS.
 
-The simple targets use small a small patchset, including regular sampling with only one or two white and black patches and maybe a few neutral patches. More advanced targets use a large patchset, including regular or random sampling, with more white and black and many more neutral patches. With regular sampling, for example iProfiler at the moment, also creates many near-netural patches.
+The simple targets use small a small patch set, including regular sampling with only one or two white and black patches and maybe a few neutral patches. More advanced targets use a large patch set, including regular or random sampling, with more white and black and many more neutral patches. With regular sampling, for example iProfiler at the moment, also creates many near-netural patches.
 
 As far as I can see, the standard test charts and iProfiler uses regular sampling whereas argyllcms (by default) uses random sampling. More information about random sampling can be found at [Adaptive color-printer modeling using regularized linear splines, Don Bone, 1993.](https://sci-hub.se/10.1117/12.149033) and [Improved output device characterisation test charts, Graeme W. Gill, 2004](https://library.imaging.org/admin/apis/public/api/ist/website/downloadArticle/cic/12/1/art00036).
 
 It says "the ... technique (MAMAS) is described and tested using simulations. With measurement noise level, delta, much less than the desired accuracy, alpha, the technique proves to have significant advantages over regular sampling approaches.".
 
-Creating a test chart (e.g. TIF image) from a patchset is straight-forward but might not be very easy. printtarg utility in Argyll CMS.
+Creating a test chart (e.g. TIF image) from a patch set is straight-forward but might not be very easy. printtarg utility in Argyll CMS.
  
 I created a (Google) sheet to find maximum number of patches that can be laid on a single paper considering all variables including the printer parameters such as margins and reduced quality areas, the paper size and the i1iSis chart specifications. Using the minumums in chart specifications (which corresponds to tight margin setting in i1Profiler and 6x6mm patch size), 1020 patches fit to a single A4 page. This considers the reduced quality areas of the printer (patches are not laid out there)
 
-## Patchsets of Standard Color Charts
+## Patch Sets of Standard Color Charts
 
 - TC9.18: 1 white, 1 black,
 
@@ -57,16 +86,16 @@ Surprisingly printing a test chart sounds simple but difficult to do in practice
 
 ## targen
 
-I generated a few different patchsets, for 1x, 2x and 3x A4 pages, 1x A3 page and 1x A3+ page. For 1x A4, I generated a few alternatives with different number of gray patches.
+I generated a few different patch sets, for 1x, 2x and 3x A4 pages, 1x A3 page and 1x A3+ page. For 1x A4, I generated a few alternatives with different number of gray patches.
 
 | name | # of white (-e) | # of black (-B) | # of gray (-g) | total # of patches (-f) | pages |
 |---|---|---|---|---|
-| patchset_wb4_g32_1020   |  4 |  4 |  32 | 1020 | 1x A4 |
-| patchset_wb4_g64_1020   |  4 |  4 |  64 | 1020 | 1x A4 |
-| patchset_wb8_g128_2040  |  8 |  8 | 128 | 2040 | 2x A4 |
-| patchset_wb16_g256_3060 | 16 | 16 | 256 | 3060 | 3x A4 |
-| patchset_wb16_g256_2420 | 16 | 16 | 256 | 2420 | 1x A3 |
-| patchset_wb16_g256_3185 | 16 | 16 | 256 | 3185 | 1x A3+ |
+| ac_wb4_g32_1020   |  4 |  4 |  32 | 1020 | 1x A4 |
+| ac_wb4_g64_1020   |  4 |  4 |  64 | 1020 | 1x A4 |
+| ac_wb8_g128_2040  |  8 |  8 | 128 | 2040 | 2x A4 |
+| ac_wb16_g256_3060 | 16 | 16 | 256 | 3060 | 3x A4 |
+| ac_wb16_g256_2420 | 16 | 16 | 256 | 2420 | 1x A3 |
+| ac_wb16_g256_3185 | 16 | 16 | 256 | 3185 | 1x A3+ |
 
 ## iProfiler
 
