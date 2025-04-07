@@ -4,15 +4,15 @@ This repository contains ICC profiles I created for Epson SureColor P800 (SC-P80
 
 # Overview
 
-- I create the patch sets using [Argyll CMS targen utility](https://www.argyllcms.com/). I typically use enough patches to cover 2x A4 pages. This creates a patchset.ti1 file. Since I am using X-Rite i1iSis XL Chart Reader, I can use A3 or A3+ test charts, but I am mostly using A4 papers.
+ICC profile creation steps are: creating the patch set, creating and printing the test chart, measuring the test chart and creating the ICC profile.
+
+- I create the patch sets using [Argyll CMS targen utility](https://www.argyllcms.com/). I typically use a number of patches to fully cover 2x A4 pages. This creates a patchset.ti1 file. Since I am using X-Rite i1iSis XL Chart Reader, I can use A3 or A3+ test charts, which is actually a very good thing since A3 can have more patches than 2x A4 and it can be read at one session but I am mostly using A4 papers.
 
 - I use [my scaleti1rgb utility](scaleti1rgb.py) to scale the RGB values in ti1 file from 0-100 (what targen generates) to 0-255 (what i1Profiler expects). This creates a patchset.txt file. I guided ChatGPT to write this utility.
 
 - I create the test charts (TIF files) using [X-Rite i1Profiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler) by loading patchset.txt. i1Profiler is not a free software, but this feature can be freely used.
 
 - I use ColorSync utility in macOS to print the test charts.
-
-- I print the TIF test charts using Color Sync Utility on macOS.
 
 - After the prints are dried, I measure the printed test charts using [X-Rite i1iSis XL Automated Chart Reader](https://xritephoto.com/documents/literature/en/L11-213_iSis_Brochure_en.pdf) in dual scan mode (M0 and M2), using i1Profiler (this feature can also be used freely). The measurements are saved as i1Profiler CGATS files, M0.txt and M2.txt. I usually measure the targets after ~1h to be sure they can be read by i1iSis, and do a final measurement after minimum 24h.
 
