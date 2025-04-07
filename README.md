@@ -10,7 +10,7 @@ ICC profile creation steps are: creating the patch set, creating and printing th
 
 - I create the patchsets either using [Argyll CMS](https://www.argyllcms.com/) [targen](https://www.argyllcms.com/doc/targen.html) utility or [X-Rite i1Profiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler). targen creates a patchset.ti1 file and I save the i1Profiler's patchset to a patchset.txt file. If I use targen, then I also use my [scaleti1rgb utility](scaleti1rgb.py) to scale the RGB values in ti1 file from 0-100 (what targen generates) to 0-255 (what i1Profiler expects). This converts the ti1 file to a txt file, patchset.txt. I guided ChatGPT to write this utility.
 
-- I create the test charts (TIF files) using i1Profiler by loading patchset.txt. Since I am using X-Rite i1iSis XL Chart Reader, I can use A4, A3 or A3+ test charts.
+- I create the test charts (TIF files) using i1Profiler by loading patchset.txt. Since I am using X-Rite i1iSis XL Chart Reader, I can use A4, A3 or A3+ test charts. After creating the test chart, I check the TIF files in Adobe Photoshop to be sure it fits to a corresponding page (within margins) and also the patches are outside of reduced quality area of the printer. i1Profiler has no feature to specify this, so it has to be done manually.
 
 - I use ColorSync utility in macOS to print the test charts.
 
@@ -18,7 +18,9 @@ ICC profile creation steps are: creating the patch set, creating and printing th
 
 - I use [Argyll CMS colprof utility](https://www.argyllcms.com/) utility to create three profiles: one for M0 measurements without FWA compensation, one for M0 measurements with FWA compensation and one for M2 measurements without FWA compensation.
 
-# Naming
+# File Naming
+
+There is going to be a lot of similar files in this repository, so the file naming rules are important. I list them here.
 
 ## Patch Sets
 
@@ -40,10 +42,15 @@ The test chart is created in iProfiler by setting up:
 
 Thus, a test chart layout depends on the page size, printer and patch size. The test chart file name is an extension of the patch set, adding the page size, printer and patch size to that. For example, `i1_2033.txt` patch set might have a test chart base name `i1_2033_A4_P800_6x6` meaning an A4 page on SC-P800 and a patch size of 6x6mm. There is going to be a `.txf` file with this basename, and also one or more `.tif` files for each page of the color charts. When there are multiple pages, the basename also has a suffix `_X` where X is the page number. For example, for the example before, `i1_2033_A4_P800_6x6_1.tif` would be the first page of this color chart. The `.txf` file can be used to load this color chart back to i1Profiler before doing a measurement because the measurement needs to know both the patch set (txf file contains the patch set values) and the layout of color chart.
 
+i1Profiler by default adds the base name of the test chart to the test chart itself. It is double check. It is also possible to add layout information a barcode that can be automatically read by i1iSis but I am not using this feature.
+
 This repository only contains ICC profiles for SC-P800, but I decided to still keep the printer model in the base name to eliminate confusion.
 
 ## Measurements
 
+The measurement is done with a specific paper and actually with a specific ink. However, I consider the ink as part of the printer, so what I mean by SC-P800 is that it is using the original inks (Epson UltraChrome HD). Also, the layout is not important for the measurement. It already contains information about the patch set but to make a correlation I extend the patch set name. Thus, the measurement file name is `patch_set_name_PAPER_M0orM2.txt`. For example, `i1_2033_Epson_Archival_Matte_M0.txt`. Since I always measure in dual scan mode, there are always an M0 and an M2 measurement file.
+
+## Profiles
 
 # Patch Set and Test Chart Design
 
