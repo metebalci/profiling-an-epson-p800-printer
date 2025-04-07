@@ -10,6 +10,8 @@ This repository contains ICC profiles I created for Epson SureColor P800 (SC-P80
 
 - I create the test charts (TIF files) using [X-Rite i1Profiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler) by loading patchset.txt. i1Profiler is not a free software, but this feature can be freely used.
 
+- I use ColorSync utility in macOS to print the test charts.
+
 - I print the TIF test charts using Color Sync Utility on macOS.
 
 - After the prints are dried, I measure the printed test charts using [X-Rite i1iSis XL Automated Chart Reader](https://xritephoto.com/documents/literature/en/L11-213_iSis_Brochure_en.pdf) in dual scan mode (M0 and M2), using i1Profiler (this feature can also be used freely). The measurements are saved as i1Profiler CGATS files, M0.txt and M2.txt. I usually measure the targets after ~1h to be sure they can be read by i1iSis, and do a final measurement after minimum 24h.
@@ -27,17 +29,23 @@ There are different patch sets, standard or generated on the fly. Main parameter
 
 The simple targets use small a small patchset, including regular sampling with only one or two white and black patches and maybe a few neutral patches. More advanced targets use a large patchset, including regular or random sampling, with more white and black and many more neutral patches. With regular sampling, for example iProfiler at the moment, also creates many near-netural patches.
 
-As far as I can see, argyllcms is the only software using random sampling and the idea comes from [Adaptive color-printer modeling using regularized linear splines, Don Bone, 1993.](https://sci-hub.se/10.1117/12.149033). It says "the ... technique (MAMAS) is described and tested using simulations. With measurement noise level, delta, much less than the desired accuracy, alpha, the technique proves to have significant advantages over regular sampling approaches.". 
+As far as I can see, the standard test charts and iProfiler uses regular sampling whereas argyllcms (by default) uses random sampling. More information about random sampling can be found at [Adaptive color-printer modeling using regularized linear splines, Don Bone, 1993.](https://sci-hub.se/10.1117/12.149033) and [Improved output device characterisation test charts, Graeme W. Gill, 2004](https://library.imaging.org/admin/apis/public/api/ist/website/downloadArticle/cic/12/1/art00036).
+
+It says "the ... technique (MAMAS) is described and tested using simulations. With measurement noise level, delta, much less than the desired accuracy, alpha, the technique proves to have significant advantages over regular sampling approaches.".
+
+Creating a test chart (e.g. TIF image) from a patchset is straight-forward but might not be very easy. printtarg utility in Argyll CMS.
  
 I created a (Google) sheet to find maximum number of patches that can be laid on a single paper considering all variables including the printer parameters such as margins and reduced quality areas, the paper size and the i1iSis chart specifications. Using the minumums in chart specifications (which corresponds to tight margin setting in i1Profiler and 6x6mm patch size), 1020 patches fit to a single A4 page. This considers the reduced quality areas of the printer (patches are not laid out there)
 
 # Printing the Test Chart
 
+Surprisingly printing a test chart sounds simple but difficult to do in practice. The idea is that, because the profiling software needs to know the exact values of the colors in a test chart that is sent to the printer, the colors of the test chart (TIF, PS, PDF etc.) should not be modified at all, neither by the application software, nor by the operating system, nor by the printer driver. The last in the chain, the printer driver, is the easiest, you can just select no color management. However, the application software and the operating system interaction is not well documented, particularly in Windows. Many companies use and recommend [Adobe Color Printer Utility](https://helpx.adobe.com/photoshop/kb/no-color-management-option-missing.html) but this utility is not supported well enough. It has a scaling problem in Windows and macOS 10.15 is not supported. I think at the moment the only free option is to use ColorSync utility in macOS.
+
 # Details
 
 ## targen
 
-For A4, I use:
+I use 2040 patches to fill two A4 pages, including:
 
 - 8 white patches (-e)
 - 8 black patches (-B)
@@ -50,9 +58,9 @@ targen -v -d2 -G -e8 -B8 -g256 -f2040 patchset2040
 
 ## iProfiler
 
-For patchset2852 layout on 4x A4 pages, I use 7.5mm x 6.6mm patches. 
+patchset2040 fits to two A4 pages, this is based on my calculation.
 
-In iProfiler (advanced, printer profiling workflow), I set the test chart margins to printer's minimum margin values for top and sides (3mm) and try to find a slightly larger (>10%) than minimum patch size (6mm x 6mm for i1iSis). Because the bottom reduced quality area is slightly (33mm vs. 38mm) larger than the top (and the footer area of the test chart is smaller than the header), I set the bottom margin value to 12mm. The header length is the default value of 32mm. Depending on how the actual patches are layout on the pages, I try to find reasonable numbers, this is a manual, trial-and-error process.
+In i1Profiler (advanced, printer profiling workflow), I set the options to the parameters in my calculation (and select tight margins) and the test chart is generated as I expected.
 
 ## colprof
 
