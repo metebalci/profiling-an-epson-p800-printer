@@ -28,29 +28,36 @@ The patch sets (ti1 and/or txt) starting with `i1_` is created with i1Profiler, 
 
 i1 patch sets are always scrambled (patch positions are randomized) and the only variable is the number of patches. Thus, the file names are always in the form `i1_XXXX.txt` whereas XXXX is a number (and probably always a 4 digit number).
 
-ac patch sets are also always scrambled but targen adds the gray patches to the beginning of the set, so they will be seen in order on the first page. The variables are the number of white, black, gray and the total number of patches. I always keep the number of white patches equal to black patches. Thus, the file names are always in the form `ac_wbXX_gYYY_ZZZZ`. XX, YYY and ZZZZ are numbers, whereas XX can be one or two digits, YYY can be two or three digits and ZZZZ is probably always 4 digits.
+ac patch sets are also always scrambled (but if requested targen adds the neutral patches to the beginning of the set, so they will be seen in order on the first page). targen has a number of parameters so they can be added to the name, but to keep it simple, I use the form: `ac_XXXX[_pre]`, where XXXX is probably always a 4 digits number. It is possible to generate a pre-conditioned patch set from an existing profile. In this case `_pre` is added to the name.
 
 The patch sets are independent of the printer, paper or ink used. Hence, the name contains no such information.
 
 I generated a few patch sets. 
 
-- I use only one patch set from i1Profiler. It is the default patch set in the current i1Profiler (3.8.4) (when Advanced > Printer > Profiling is opened) which has 2033 patches. The scrambled (randomized) set is [i1_2033.txt](). Its patches are semi-regularly sampled including neutral and near-neutral patches (on 3 different axis near neutral axis).
+- I use only one patch set from i1Profiler. It is the default patch set in the current i1Profiler (3.8.4) (when Advanced > Printer > Profiling is opened) which has 2033 patches. The scrambled (randomized) set is [i1_2033.txt](). Its patches are semi-regularly sampled including neutral and near-neutral patches. `i1_2033` fits into 2x A4 (6x6), 3x A4 (9x6), 1x A3 (6x6), 2x A3 (9x6) or 1x A3+ (6x6 or 9x6).
 
 [i3_2033 image]
 
-- With Argyll CMS, I created a few different patch sets. The ones with 1020 patches are only for testing, I do not think it makes sense to use them for production. The next is 2040 patches
+- With Argyll CMS, I created a few different patch sets particularly keeping the layout in mind to use all usable area of a A4, A3 or A3+ page. I also created 6x6 and 9x6 patch size variants.
 
-, for 1x, 2x and 3x A4 pages, 1x A3 page and 1x A3+ page. For 1x A4, I generated a few alternatives with different number of gray patches.
+| name | # of white and black patches (-e and -B) | A4 pages |
+| --- | --- | --- |
+| ac_1020 |  4 | 1x A4 (6x6) |
+| ac_1360 |  4 | 2x A4 (9x6) |
+| ac_2040 |  8 | 2x A4 (6x6) or 3x A4 (9x6) |
+| ac_2720 | 16 | 4x A4 (9x6) |
+| ac_3060 | 16 | 3x A4 (6x6) |
 
-| name | # of white (-e) | # of black (-B) | # of gray (-g) | total # of patches (-f) | pages |
-| ---- | --------------- | --------------- | -------------- | ----------------------- | ----- |
-| ac_wb4_g32_1020   |  4 |  4 |  32 | 1020 | 1x A4 |
-| ac_wb4_g64_1020   |  4 |  4 |  64 | 1020 | 1x A4 |
-| ac_wb8_g128_2040  |  8 |  8 | 128 | 2040 | 2x A4 (6x6) or 3x A4 (9x6) |
-| ac_wb8_g128_2720  | 16 | 16 | 256 | 2720 | 4x A4 (9x6) |
-| ac_wb16_g256_3060 | 16 | 16 | 256 | 3060 | 3x A4 (6x6) |
-| ac_wb16_g256_2420 | 16 | 16 | 256 | 2420 | 1x A3 |
-| ac_wb16_g256_3185 | 16 | 16 | 256 | 3185 | 1x A3+ |
+| name | # of white and black patches (-e and -B) | A3 pages |
+| --- | --- | --- |
+| ac_1595 |  4 | 1x A3 (9x6) |
+| ac_2420 | 16 | 1x A3 (6x6) |
+| ac_3190 | 16 | 2x A3 (9x6) |
+
+| name | # of white and black patches (-e and -B) | A3+ pages |
+| --- | --- | --- |
+| ac_2080 |  8 | 1x A3+ (9x6) |
+| ac_3185 | 16 | 1x A3+ (6x6) |
 
 ## Test Charts
 
