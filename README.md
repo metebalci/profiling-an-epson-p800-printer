@@ -1,6 +1,6 @@
 # ICC Profiles for SC-P800
 
-This repository contains the patch sets, test charts, measurements and ICC profiles I created for my [Epson SureColor P800 (SC-P800)](docs/P800-brochure.pdf) printer using [X-Rite i1iSis XL](docs/i1iSis-brochure.pdf) automated chart reader.
+This repository contains the patch sets, test charts, measurements and ICC profiles I created for my [Epson SureColor P800 (SC-P800)](docs/P800-brochure.pdf) printer using [X-Rite i1iSis XL](docs/i1iSis-brochure.pdf) automated chart reader using [X-Rite i1Profiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler) and [Argyll CMS](https://www.argyllcms.com/).
 
 # Overview
 
@@ -8,7 +8,7 @@ ICC profile creation steps are: creating the patch set, creating and printing th
 
 *i1Profiler mentioned below is not a free software, but the features I am using and described below can be used freely in demo mode.*
 
-- I create the patchsets either using [Argyll CMS](https://www.argyllcms.com/) [targen](https://www.argyllcms.com/doc/targen.html) utility or [X-Rite i1Profiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler). targen creates a patchset.ti1 file and I save the i1Profiler's patchset to a patchset.txt file. If I use targen, then I also use my [scaleti1rgb utility](scaleti1rgb.py) to scale the RGB values in ti1 file from 0-100 (what targen generates) to 0-255 (what i1Profiler expects). This converts the ti1 file to a txt file, patchset.txt. I guided ChatGPT to write this utility.
+- I create the patchsets either using Argyll CMS's [targen](https://www.argyllcms.com/doc/targen.html) utility or i1Profiler. targen creates a patchset.ti1 file and I save the i1Profiler's patchset to a patchset.txt file. If I use targen, then I also use my [scaleti1rgb utility](scaleti1rgb.py) to scale the RGB values in ti1 file from 0-100 (what targen generates) to 0-255 (what i1Profiler expects). This converts the ti1 file to a txt file, patchset.txt. I guided ChatGPT to write this utility.
 
 - I create the test charts (TIF files) using i1Profiler by loading patchset.txt. Since I am using X-Rite i1iSis XL Chart Reader, I can use A4, A3 or A3+ test charts. After creating the test chart, I check the TIF files in Adobe Photoshop to be sure it fits to a corresponding page (within margins) and also the patches are outside of reduced quality area of the printer. i1Profiler has no feature to specify this, so it has to be done manually.
 
