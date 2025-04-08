@@ -1,6 +1,6 @@
 # ICC Profiles for SC-P800
 
-This repository contains the patch sets, test charts, measurements and ICC profiles I created for my Epson SureColor P800 (SC-P800) printer using i1iSis XL automated chart reader.
+This repository contains the patch sets, test charts, measurements and ICC profiles I created for my [Epson SureColor P800 (SC-P800)](docs/P800-brochure.pdf) printer using [X-Rite i1iSis XL](docs/i1iSis-brochure.pdf) automated chart reader.
 
 # Overview
 
