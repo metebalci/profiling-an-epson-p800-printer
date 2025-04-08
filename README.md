@@ -2,15 +2,17 @@
 
 This repository contains the patch sets, test charts, measurements and ICC profiles I created for my [Epson SureColor P800 (SC-P800)](docs/P800-brochure.pdf) printer using [X-Rite i1iSis XL](docs/i1iSis-brochure.pdf) automated chart reader using [X-Rite i1Profiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler) and [Argyll CMS](https://www.argyllcms.com/).
 
+The general information here about the printer profiling can be applied to any (RGB) printer. I do not know how CMYK printers differ.
+
 # Overview
 
 ICC profile creation steps are: creating the patch set, creating and printing the test chart, measuring the test chart and creating the ICC profile.
 
 *i1Profiler mentioned below is not a free software, but the features I am using and described below can be used freely in demo mode.*
 
-- I create the patchsets either using Argyll CMS's [targen](https://www.argyllcms.com/doc/targen.html) utility or i1Profiler. targen creates a patchset.ti1 file and I save the i1Profiler's patchset to a patchset.txt file. If I use targen, then I also use my [scaleti1rgb utility](scaleti1rgb.py) to scale the RGB values in ti1 file from 0-100 (what targen generates) to 0-255 (what i1Profiler expects). This converts the ti1 file to a txt file, patchset.txt. I guided ChatGPT to write this utility.
+- I create the patchsets either using i1Profiler or Argyll CMS's [targen](https://www.argyllcms.com/doc/targen.html). I save the i1Profiler patch set as iProfiler CGATS .txt file. targen creates a .ti1 file and then I use my [scaleti1rgb utility](scaleti1rgb.py) utility to scale the RGB values in ti1 file from 0-100 (what targen generates) to 0-255 (what i1Profiler expects). This converts the ti1 file to a txt file. I guided ChatGPT to write this utility.
 
-- I create the test charts (TIF files) using i1Profiler by loading patchset.txt. Since I am using X-Rite i1iSis XL Chart Reader, I can use A4, A3 or A3+ test charts. After creating the test chart, I check the TIF files in Adobe Photoshop to be sure it fits to a corresponding page (within margins) and also the patches are outside of reduced quality area of the printer. i1Profiler has no feature to specify this, so it has to be done manually.
+- I create the test charts (TIF files) using i1Profiler by loading the patch set's txt file (either generated from i1Profiler or from targen and rescaled). Since I am using X-Rite i1iSis XL Chart Reader, I can use A4, A3 or A3+ test charts. After creating the test chart, I check the TIF files in Adobe Photoshop to be sure it fits to a corresponding page (within margins) and also the patches are outside of reduced quality area of the printer. i1Profiler has no feature to specify this, so it has to be done manually.
 
 - I use ColorSync utility in macOS to print the test charts.
 
@@ -20,7 +22,22 @@ ICC profile creation steps are: creating the patch set, creating and printing th
 
 # Design of Patch Sets and Test Charts
 
-A patch set can be reused independent of the measuring instrument, the printer and the paper, and the test chart can be reused independent of the paper. However, the capability and the features of the measuring instrument has a primary effect (due to the automation capability, minimum/recommended patch size, maximum test chart size etc.), and the printer has a secondary effect (due to margins and reduced quality print areas) on the size of patch set used, hence these are not totally independent.
+A patch set can be reused independent of the measuring instrument, the printer and the paper. Hence, there are standard patch sets (like TC9.18). The test chart can be reused independent of the paper (and almost all profiling services also use a single test chart independent of the printer). 
+
+The selection of patches in a patch set is a complicated topic. Primarily, there are two ways to select patches:
+
+- regular/semi-regular sampling of a color space, and optionally augment this with extra patches (with neutral, near-neutral or particular colors). i1Profiler generates the patch set like this. All the standard test charts and test charts of remote ICC profiling services I have seen are like this.
+
+- non-regular/random/quasi-random sampling of a color space, and optionally augmenting/modifying this with extra patches. targen generates the patch set like this.
+
+When using regular/semi-regular sampling, the size of the patch set can take particular values. If not, some samples will be missing and it is against the idea of regular sampling. On the other hand, when using non-regular sampling, the number of patches can be any number. 
+
+Independent of which sampling is used, the number of patches depend on the capability of the measuring instrument. If it is an automated reader, a lot of patches can be used. Finally, the actual number of patches then depends on the paper size, how many paper sheets to use and the printer's margin and reduced quality zone specification.
+
+[For RGB Printer Profiling, X-Rite recommends](https://www.xrite.com/service-support/recommended_rgb_printer_profiling_with_i1profiler) using their patch set with 2033 or 1586 patches.
+
+
+i1Profiler's patch set generation is very simple, you only choose the number of patches and scramble/randomize them if you want. The problem is the number there changes the things and a few numbers are better than others.
 
 # File Naming
 
@@ -85,19 +102,7 @@ I do not plan to keep all of the temporary files (measurements after ~1h), but i
 
 ## Profiles
 
-# Details
-
-## targen
-
-
-
-## iProfiler
-
-patchset2040 fits to two A4 pages, this is based on my calculation.
-
-In i1Profiler (advanced, printer profiling workflow), I set the options to the parameters in my calculation (and select tight margins) and the test chart is generated as I expected.
-
-## colprof
+# Profile Generation
 
 - The manufacturer (-A, Epson) and the model (-M, SC-P800) fields are set.
 - The description tag is set to "Epson SC-P800 <MEASUREMENT_CONDITION_M0_or_M2> <FWA_IF_FWA_COMPENSATION_ENABLED> <PAPER>".
@@ -107,3 +112,13 @@ In i1Profiler (advanced, printer profiling workflow), I set the options to the p
 - The illuminant is set to D50 (default) and CIE observer is set to 1931_2 (default).
 - For the generation of gamut mapping for the perceptual and saturation rendering intents, AdobeRGB1998 is used as source gamut.
 - Monitor in typical work environment (-cmt) for input viewing conditions and Practical Reflection Print (ISO-3664 P2) (-dpp) for output viewing conditions are set.
+
+# Issues To Be Aware Of
+
+## Generating the Test Charts
+
+iProfiler's test chart generation is a bit odd. It has a margin setup but no concept of reduced quality zone. Also, the top part of the test chart before the patches has a larger area than the bottom after the patches. However, the bottom reduced quality zone can be larger than the top for some printers (like SC-P800). So the test chart generated with iProfiler cannot or should not be used directly.
+
+## Printing the Test Charts
+
+Surprisingly printing a test chart (without an extra non-free software) is more difficult than it sounds. The difficulty is the test chart should be printed as it is without any color change/management applied. In the past, it was possible to do this with Adobe Photoshop, however Adobe removed this from Photoshop. A very common and traditional way is to use [Adobe Color Printer Utility](https://helpx.adobe.com/photoshop/kb/no-color-management-option-missing.html). However, ACPU has a scaling problem in Windows (it changes the scale of the test chart) and ACPU is not supported on macOS 10.15 and later. Unfortunately, this makes it not straight-forward to print a test chart on Windows. On macOS, there is a simple solution. ColorSync utility supports printing test charts.
