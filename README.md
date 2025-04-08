@@ -1,12 +1,12 @@
 # ICC Profiles for SC-P800
 
-This repository contains ICC profiles I created for Epson SureColor P800 (SC-P800) Printer.
+This repository contains the patch sets, test charts, measurements and ICC profiles I created for my Epson SureColor P800 (SC-P800) printer using i1iSis XL automated chart reader.
 
 # Overview
 
 ICC profile creation steps are: creating the patch set, creating and printing the test chart, measuring the test chart and creating the ICC profile.
 
-*i1Profiler is not a free software, but the features I am using below can be used freely in demo mode.*
+*i1Profiler mentioned below is not a free software, but the features I am using and described below can be used freely in demo mode.*
 
 - I create the patchsets either using [Argyll CMS](https://www.argyllcms.com/) [targen](https://www.argyllcms.com/doc/targen.html) utility or [X-Rite i1Profiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler). targen creates a patchset.ti1 file and I save the i1Profiler's patchset to a patchset.txt file. If I use targen, then I also use my [scaleti1rgb utility](scaleti1rgb.py) to scale the RGB values in ti1 file from 0-100 (what targen generates) to 0-255 (what i1Profiler expects). This converts the ti1 file to a txt file, patchset.txt. I guided ChatGPT to write this utility.
 
@@ -17,6 +17,10 @@ ICC profile creation steps are: creating the patch set, creating and printing th
 - After the prints are dried, I measure the printed test charts using [X-Rite i1iSis XL Automated Chart Reader](https://xritephoto.com/documents/literature/en/L11-213_iSis_Brochure_en.pdf) in dual scan mode (M0 and M2), using i1Profiler. I save the measurements in i1Profiler CGATS Spectral format, and this creates two files, M0.txt and M2.txt. I usually measure the targets once after ~1h to be sure they can be read by i1iSis, and do the final measurement after 24h.
 
 - I use [Argyll CMS colprof utility](https://www.argyllcms.com/) utility to create three profiles: one for M0 measurements without FWA compensation, one for M0 measurements with FWA compensation and one for M2 measurements without FWA compensation.
+
+# Design of Patch Sets and Test Charts
+
+A patch set can be reused independent of the measuring instrument, the printer and the paper, and the test chart can be reused independent of the paper. However, the capability and the features of the measuring instrument has a primary effect (due to the automation capability, minimum/recommended patch size, maximum test chart size etc.), and the printer has a secondary effect (due to margins and reduced quality print areas) on the size of patch set used, hence these are not totally independent.
 
 # File Naming
 
