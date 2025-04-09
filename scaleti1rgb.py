@@ -68,8 +68,7 @@ def rescale_ti1_rgb(input_file, output_file):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Rescale RGB values in a .ti1 file from 0–100 to
- 0–255 for i1Profiler.")
+    parser = argparse.ArgumentParser(description="Rescale RGB values in a .ti1 file from 0–100 to 0–255 for i1Profiler.")
     parser.add_argument("input", help="Input .ti1 file")
     parser.add_argument("-o", "--output", help="Output file (default: input_basename.txt)")
 
@@ -77,4 +76,4 @@ if __name__ == "__main__":
     default_output = os.path.splitext(args.input)[0] + ".txt"
     output_file = args.output or default_output
 
-    rescale_ti1_rgb(args.input, output_file)                      
+    rescale_ti1_rgb(args.input, output_file)
