@@ -12,7 +12,7 @@ ICC profile creation steps are: creating the patch set, creating and printing th
 
 - I create the patchsets either using i1Profiler or Argyll CMS's [targen](https://www.argyllcms.com/doc/targen.html). I save the i1Profiler patch set as iProfiler CGATS .txt file. targen creates a .ti1 file and then I use my [scaleti1rgb utility](scaleti1rgb.py) utility to scale the RGB values in ti1 file from 0-100 (what targen generates) to 0-255 (what i1Profiler expects). This converts the ti1 file to a txt file. I guided ChatGPT to write this utility.
 
-- I create the test charts (TIF files) using i1Profiler by loading the patch set's txt file (either generated from i1Profiler or from targen and rescaled). Since I am using X-Rite i1iSis XL Chart Reader, I can use A4, A3 or A3+ test charts. After creating the test chart, I check the TIF files in Adobe Photoshop to be sure it fits to a corresponding page (within margins) and also the patches are outside of reduced quality area of the printer. i1Profiler has no feature to specify this, so it has to be done manually.
+- I create the test charts (TIF files) using i1Profiler by loading the patch set's txt file (either generated from i1Profiler or from targen and rescaled). Since I am using X-Rite i1iSis XL Chart Reader, I can use A4, A3 or A3+ test charts. After creating the test chart, I check the TIF files in Adobe Photoshop to be sure it fits to a corresponding page (within margins) and also the patches are outside of reduced quality area of the printer, and also extend the height of the TIF file to the paper (minus margins). This is required because ColorSync centers the image when printing. i1Profiler has no such features to automatically do all these, so it has to be done manually.
 
 - I use ColorSync utility in macOS to print the test charts.
 
@@ -22,22 +22,21 @@ ICC profile creation steps are: creating the patch set, creating and printing th
 
 # Design of Patch Sets and Test Charts
 
-A patch set can be reused independent of the measuring instrument, the printer and the paper. Hence, there are standard patch sets (like TC9.18). The test chart can be reused independent of the paper (and almost all profiling services also use a single test chart independent of the printer). 
+An RGB printer responds to 3x8-bit RGB colors. 
 
-The selection of patches in a patch set is a complicated topic. Primarily, there are two ways to select patches:
+A patch set can be reused independent of the measuring instrument, the printer and the paper. Hence, there are standard patch sets (like TC9.18). The test chart can be reused independent of the paper (and all the profiling services I have seen also use a single test chart independent of the printer). 
 
-- regular/semi-regular sampling of a color space, and optionally augment this with extra patches (with neutral, near-neutral or particular colors). i1Profiler generates the patch set like this. All the standard test charts and test charts of remote ICC profiling services I have seen are like this.
+The selection of patches to create a printer profile is a complicated topic. There are two main approaches to select the patches:
 
-- non-regular/random/quasi-random sampling of a color space, and optionally augmenting/modifying this with extra patches. targen generates the patch set like this.
+- using a regular/semi-regular sampling of a color space, and then augmenting this with extra patches (with neutral, near-neutral or particular colors). i1Profiler generates a patch set with this approach. All the standard test charts and test charts of remote ICC profiling services I have seen also uses this approach.
 
-When using regular/semi-regular sampling, the size of the patch set can take particular values. If not, some samples will be missing and it is against the idea of regular sampling. On the other hand, when using non-regular sampling, the number of patches can be any number. 
+- using a non-regular/random/quasi-random sampling of a color space, and optionally augmenting this with extra patches. targen generates a patch set with this approach.
 
-Independent of which sampling is used, the number of patches depend on the capability of the measuring instrument. If it is an automated reader, a lot of patches can be used. Finally, the actual number of patches then depends on the paper size, how many paper sheets to use and the printer's margin and reduced quality zone specification.
+When using regular/semi-regular sampling, the size of the patch set can only reasonably take particular numbers. If not, some samples will be missing and it is against the idea of regular sampling. On the other hand, when using non-regular sampling, the number of patches can basically be any number. 
 
-[For RGB Printer Profiling, X-Rite recommends](https://www.xrite.com/service-support/recommended_rgb_printer_profiling_with_i1profiler) using their patch set with 2033 or 1586 patches.
+Independent of which sampling approach is used, the number of patches practically depend on the capability of the measuring instrument (and the time you have and the money you want to spend on the paper and the ink). If it is an automated reader (or if there is an embedded spectrometer in the printer), a lot of patches can be used. Finally, the actual number of patches then depends on the paper size, how many paper sheets to use and the printer's margin and reduced quality zone specification.
 
-
-i1Profiler's patch set generation is very simple, you only choose the number of patches and scramble/randomize them if you want. The problem is the number there changes the things and a few numbers are better than others.
+[For RGB Printer Profiling, X-Rite recommends](https://www.xrite.com/service-support/recommended_rgb_printer_profiling_with_i1profiler) using their patch set with 2033 or 1586 patches. None of them are for RGB printer profiling but none of the standard test targets I have seen has more than 2000 patches. It is also a common practice to use between 2-3K (sometimes 3-4K, rarely over 4K) patches.
 
 # File Naming
 
@@ -55,30 +54,33 @@ The patch sets are independent of the printer, paper or ink used. Hence, the nam
 
 I generated a few patch sets. 
 
-- I use only one patch set from i1Profiler. It is the default patch set in the current i1Profiler (3.8.4) (when Advanced > Printer > Profiling is opened) which has 2033 patches. The scrambled (randomized) set is [i1_2033.txt](). Its patches are semi-regularly sampled including neutral and near-neutral patches. `i1_2033` fits into 2x A4 (6x6), 3x A4 (9x6), 1x A3 (6x6), 2x A3 (9x6) or 1x A3+ (6x6 or 9x6).
+- I use only one patch set from i1Profiler. It is the default patch set in the current i1Profiler (3.8.4) (when Advanced > Printer > Profiling is opened) which has 2033 patches. The scrambled (randomized) set is `i1_2033.txt`. The patches in this set are semi-regularly sampled including a number of neutral and near-neutral patches (155 according to [this post](https://forum.luminous-landscape.com/index.php?topic=118987.0)). `i1_2033` fits into 2x A4 (6x6), 3x A4 (9x6), 1x A3 (6x6) or 2x A3 (9x6).
 
-[i3_2033 image]
+[i1_2033 image]
 
-- With Argyll CMS, I created a few different patch sets particularly keeping the layout in mind to use all usable area of a A4, A3 or A3+ page. I also created 6x6 and 9x6 patch size variants.
+| patch set name | A4 pages (patch size) |
+| --- | --- |
+| i1_2033 | 2x A4 (6x6) |
+| i1_2033 | 3x A4 (9x6) |
 
-| name | # of white and black patches (-e and -B) | A4 pages |
+| patch set name | A3 pages (patch size) |
+| --- | --- |
+| i1_2033 | 1x A3 (6x6) |
+| i1_2033 | 2x A3 (9x6) |
+
+- With Argyll CMS, I created a few different patch sets particularly keeping the layout in mind to use all usable area of a A4 or A3 page. I also created 6x6 and 9x6 patch size variants.
+
+| patch set name | # of white and black patches (-e and -B) | A4 pages (patch size) |
 | --- | --- | --- |
-| ac_1020 |  4 | 1x A4 (6x6) |
-| ac_1360 |  4 | 2x A4 (9x6) |
-| ac_2040 |  8 | 2x A4 (6x6) or 3x A4 (9x6) |
-| ac_2720 | 16 | 4x A4 (9x6) |
-| ac_3060 | 16 | 3x A4 (6x6) |
+| ac_2040_wb8  |  8 | 2x A4 (6x6) | 
+| ac_2040_wb8  |  8 | 3x A4 (9x6) |
+| ac_2720_wb16 | 16 | 4x A4 (9x6) |
+| ac_3060_wb16 | 16 | 3x A4 (6x6) |
 
-| name | # of white and black patches (-e and -B) | A3 pages |
+| patch set name | # of white and black patches (-e and -B) | A3 pages (patch size) |
 | --- | --- | --- |
-| ac_1595 |  4 | 1x A3 (9x6) |
-| ac_2420 | 16 | 1x A3 (6x6) |
-| ac_3190 | 16 | 2x A3 (9x6) |
-
-| name | # of white and black patches (-e and -B) | A3+ pages |
-| --- | --- | --- |
-| ac_2080 |  8 | 1x A3+ (9x6) |
-| ac_3185 | 16 | 1x A3+ (6x6) |
+| ac_2420_wb16 | 16 | 1x A3 (6x6) |
+| ac_3190_wb16 | 16 | 2x A3 (9x6) |
 
 ## Test Charts
 
