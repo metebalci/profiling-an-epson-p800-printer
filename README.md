@@ -55,30 +55,30 @@ The patch sets are independent of the printer, paper or ink used. Hence, the nam
 
 I generated a few patch sets. 
 
-- I use only one patch set from i1Profiler. It is the default patch set in the current i1Profiler (3.8.4) (when Advanced > Printer > Profiling is opened) which has 2033 patches. The scrambled (randomized) set is [i1_2033.txt](). Its patches are semi-regularly sampled including neutral and near-neutral patches. `i1_2033` fits into 2x A4 (6x6), 3x A4 (9x6), 1x A3 (6x6), 2x A3 (9x6) or 1x A3+ (6x6 or 9x6).
+- I use only one patch set from i1Profiler. It is the default patch set in the current i1Profiler (3.8.4) (when Advanced > Printer > Profiling is opened) which has 2033 patches. The scrambled (randomized) set is `i1_2033.txt`. The patches in this set are semi-regularly sampled including a number of neutral and near-neutral patches (155 according to [this post](https://forum.luminous-landscape.com/index.php?topic=118987.0)). `i1_2033` fits into 2x A4 (6x6), 3x A4 (9x6), 1x A3 (6x6) or 2x A3 (9x6).
 
 [i1_2033 image]
 
-| name | A4 pages |
+| patch set name | A4 pages (patch size) |
 | --- | --- |
 | i1_2033 | 2x A4 (6x6) |
 | i1_2033 | 3x A4 (9x6) |
 
-| name | A3 pages |
+| patch set name | A3 pages (patch size) |
 | --- | --- |
 | i1_2033 | 1x A3 (6x6) |
 | i1_2033 | 2x A3 (9x6) |
 
 - With Argyll CMS, I created a few different patch sets particularly keeping the layout in mind to use all usable area of a A4 or A3 page. I also created 6x6 and 9x6 patch size variants.
 
-| name | # of white and black patches (-e and -B) | A4 pages |
+| patch set name | # of white and black patches (-e and -B) | A4 pages (patch size) |
 | --- | --- | --- |
 | ac_2040_wb8  |  8 | 2x A4 (6x6) | 
 | ac_2040_wb8  |  8 | 3x A4 (9x6) |
 | ac_2720_wb16 | 16 | 4x A4 (9x6) |
 | ac_3060_wb16 | 16 | 3x A4 (6x6) |
 
-| name | # of white and black patches (-e and -B) | A3 pages |
+| patch set name | # of white and black patches (-e and -B) | A3 pages (patch size) |
 | --- | --- | --- |
 | ac_2420_wb16 | 16 | 1x A3 (6x6) |
 | ac_3190_wb16 | 16 | 2x A3 (9x6) |
