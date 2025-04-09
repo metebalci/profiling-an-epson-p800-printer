@@ -57,28 +57,31 @@ I generated a few patch sets.
 
 - I use only one patch set from i1Profiler. It is the default patch set in the current i1Profiler (3.8.4) (when Advanced > Printer > Profiling is opened) which has 2033 patches. The scrambled (randomized) set is [i1_2033.txt](). Its patches are semi-regularly sampled including neutral and near-neutral patches. `i1_2033` fits into 2x A4 (6x6), 3x A4 (9x6), 1x A3 (6x6), 2x A3 (9x6) or 1x A3+ (6x6 or 9x6).
 
-[i3_2033 image]
+[i1_2033 image]
 
-- With Argyll CMS, I created a few different patch sets particularly keeping the layout in mind to use all usable area of a A4, A3 or A3+ page. I also created 6x6 and 9x6 patch size variants.
+| name | A4 pages |
+| --- | --- |
+| i1_2033 | 2x A4 (6x6) |
+| i1_2033 | 3x A4 (9x6) |
+
+| name | A3 pages |
+| --- | --- |
+| i1_2033 | 1x A3 (6x6) |
+| i1_2033 | 2x A3 (9x6) |
+
+- With Argyll CMS, I created a few different patch sets particularly keeping the layout in mind to use all usable area of a A4 or A3 page. I also created 6x6 and 9x6 patch size variants.
 
 | name | # of white and black patches (-e and -B) | A4 pages |
 | --- | --- | --- |
-| ac_1020 |  4 | 1x A4 (6x6) |
-| ac_1360 |  4 | 2x A4 (9x6) |
-| ac_2040 |  8 | 2x A4 (6x6) or 3x A4 (9x6) |
-| ac_2720 | 16 | 4x A4 (9x6) |
-| ac_3060 | 16 | 3x A4 (6x6) |
+| ac_2040_wb8  |  8 | 2x A4 (6x6) | 
+| ac_2040_wb8  |  8 | 3x A4 (9x6) |
+| ac_2720_wb16 | 16 | 4x A4 (9x6) |
+| ac_3060_wb16 | 16 | 3x A4 (6x6) |
 
 | name | # of white and black patches (-e and -B) | A3 pages |
 | --- | --- | --- |
-| ac_1595 |  4 | 1x A3 (9x6) |
-| ac_2420 | 16 | 1x A3 (6x6) |
-| ac_3190 | 16 | 2x A3 (9x6) |
-
-| name | # of white and black patches (-e and -B) | A3+ pages |
-| --- | --- | --- |
-| ac_2080 |  8 | 1x A3+ (9x6) |
-| ac_3185 | 16 | 1x A3+ (6x6) |
+| ac_2420_wb16 | 16 | 1x A3 (6x6) |
+| ac_3190_wb16 | 16 | 2x A3 (9x6) |
 
 ## Test Charts
 
