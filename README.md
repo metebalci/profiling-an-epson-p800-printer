@@ -22,22 +22,21 @@ ICC profile creation steps are: creating the patch set, creating and printing th
 
 # Design of Patch Sets and Test Charts
 
-A patch set can be reused independent of the measuring instrument, the printer and the paper. Hence, there are standard patch sets (like TC9.18). The test chart can be reused independent of the paper (and almost all profiling services also use a single test chart independent of the printer). 
+An RGB printer responds to 3x8-bit RGB colors. 
 
-The selection of patches in a patch set is a complicated topic. Primarily, there are two ways to select patches:
+A patch set can be reused independent of the measuring instrument, the printer and the paper. Hence, there are standard patch sets (like TC9.18). The test chart can be reused independent of the paper (and all the profiling services I have seen also use a single test chart independent of the printer). 
 
-- regular/semi-regular sampling of a color space, and optionally augment this with extra patches (with neutral, near-neutral or particular colors). i1Profiler generates the patch set like this. All the standard test charts and test charts of remote ICC profiling services I have seen are like this.
+The selection of patches to create a printer profile is a complicated topic. There are two main approaches to select the patches:
 
-- non-regular/random/quasi-random sampling of a color space, and optionally augmenting/modifying this with extra patches. targen generates the patch set like this.
+- using a regular/semi-regular sampling of a color space, and then augmenting this with extra patches (with neutral, near-neutral or particular colors). i1Profiler generates a patch set with this approach. All the standard test charts and test charts of remote ICC profiling services I have seen also uses this approach.
 
-When using regular/semi-regular sampling, the size of the patch set can take particular values. If not, some samples will be missing and it is against the idea of regular sampling. On the other hand, when using non-regular sampling, the number of patches can be any number. 
+- using a non-regular/random/quasi-random sampling of a color space, and optionally augmenting this with extra patches. targen generates a patch set with this approach.
 
-Independent of which sampling is used, the number of patches depend on the capability of the measuring instrument. If it is an automated reader, a lot of patches can be used. Finally, the actual number of patches then depends on the paper size, how many paper sheets to use and the printer's margin and reduced quality zone specification.
+When using regular/semi-regular sampling, the size of the patch set can only reasonably take particular numbers. If not, some samples will be missing and it is against the idea of regular sampling. On the other hand, when using non-regular sampling, the number of patches can basically be any number. 
 
-[For RGB Printer Profiling, X-Rite recommends](https://www.xrite.com/service-support/recommended_rgb_printer_profiling_with_i1profiler) using their patch set with 2033 or 1586 patches.
+Independent of which sampling approach is used, the number of patches practically depend on the capability of the measuring instrument (and the time you have and the money you want to spend on the paper and the ink). If it is an automated reader (or if there is an embedded spectrometer in the printer), a lot of patches can be used. Finally, the actual number of patches then depends on the paper size, how many paper sheets to use and the printer's margin and reduced quality zone specification.
 
-
-i1Profiler's patch set generation is very simple, you only choose the number of patches and scramble/randomize them if you want. The problem is the number there changes the things and a few numbers are better than others.
+[For RGB Printer Profiling, X-Rite recommends](https://www.xrite.com/service-support/recommended_rgb_printer_profiling_with_i1profiler) using their patch set with 2033 or 1586 patches. None of them are for RGB printer profiling but none of the standard test targets I have seen has more than 2000 patches. It is also a common practice to use between 2-3K (sometimes 3-4K, rarely over 4K) patches.
 
 # File Naming
 
