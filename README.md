@@ -13,11 +13,11 @@ ICC profile creation steps are:
 - measuring the test chart
 - creating the ICC profile
 
-*i1Profiler mentioned below is not a free software. However, creating the patchset and creating the test charts can be used in demo mode. Creating the ICC profile requires a license.*
+*i1Profiler mentioned below is not a free software. However, creating the patch set and creating the test charts can be used in demo mode. Creating the ICC profile requires a license.*
 
-- I create the patchsets either using i1Profiler or Argyll CMS's [targen](https://www.argyllcms.com/doc/targen.html). I save the i1Profiler patch set as iProfiler CGATS .txt file. targen creates a .ti1 file and then I use my [scaleti1rgb utility](scaleti1rgb.py) utility to scale the RGB values in ti1 file from 0-100 (what targen generates) to 0-255 (what i1Profiler expects). This converts the ti1 file to a txt file. I guided ChatGPT to write this utility.
+- I create the patch sets either using i1Profiler or Argyll CMS's [targen](https://www.argyllcms.com/doc/targen.html). I save the i1Profiler patch set as iProfiler CGATS .txt file. targen creates a .ti1 file and then I use my [scaleti1rgb utility](scaleti1rgb.py) utility to scale the RGB values in ti1 file from 0-100 (what targen generates) to 0-255 (what i1Profiler expects). This converts the ti1 file to a txt file. I guided ChatGPT to write this utility.
 
-- I create the test charts (TIF files) using i1Profiler by loading the patch set's txt file (either generated from i1Profiler or from targen and rescaled). Since I am using X-Rite i1iSis XL Chart Reader, I can use A4, A3 or A3+ test charts. After creating the test chart, I check the TIF files in Adobe Photoshop to be sure it fits to a corresponding page (within margins) and also the patches are outside of reduced quality area of the printer, and also extend the height of the TIF file to the paper (minus margins). This is required because ColorSync centers the image when printing. i1Profiler has no such features to automatically do all these, so it has to be done manually.
+- I create the test charts (TIF files) using i1Profiler by loading the patch set's txt file (either generated from i1Profiler or from targen and rescaled). Since I am using X-Rite i1iSis XL Chart Reader, I can use A4, A3 or A3+ test charts. After creating the test chart, I check the TIF files in Adobe Photoshop to be sure it fits to a corresponding page (within margins) and also the patches are outside of reduced quality area of the printer (for P800 it is 33mm on top and 38mm on bottom), and also extend the height of the TIF file to the paper (minus margins) (i.e. for A4 291mm (297-3-3), for A3 414mm (420-3-3)). This is required because ColorSync centers the image when printing and i1Profiler has no such features to automatically do all these, so it has to be done manually.
 
 - I use ColorSync utility in macOS to print the test charts.
 
@@ -43,7 +43,7 @@ When using regular/semi-regular sampling, the size of the patch set can only rea
 
 Independent of which sampling approach is used, the number of patches practically depend on the capability of the measuring instrument (and the time you have and the money you want to spend on the paper and the ink). If it is an automated reader (or if there is an embedded spectrometer in the printer), a lot of patches can be used. Finally, the actual number of patches then depends on the paper size, how many paper sheets to use and the printer's margin and reduced quality zone specification.
 
-[For RGB Printer Profiling, X-Rite recommends](https://www.xrite.com/service-support/recommended_rgb_printer_profiling_with_i1profiler) using their patch set with 2033 or 1586 patches. None of them are for RGB printer profiling but none of the standard test targets I have seen has more than 2000 patches. It is also a common practice to use between 2-3K (sometimes 3-4K, rarely over 4K) patches.
+[For RGB Printer Profiling, X-Rite recommends](https://www.xrite.com/service-support/recommended_rgb_printer_profiling_with_i1profiler) using their patch set with 2033 or 1586 patches. Commercial printer profiling services also use something similar, between 1K and 3K patches. I have rarely seen any over 3K.
 
 # File Naming
 
@@ -63,7 +63,7 @@ I generated a few patch sets.
 
 - I use only one patch set from i1Profiler. It is the default patch set in the current i1Profiler (3.8.4) (when Advanced > Printer > Profiling is opened) which has 2033 patches. The scrambled (randomized) set is `i1_2033.txt`. The patches in this set are semi-regularly sampled including a number of neutral and near-neutral patches (155 according to [this post](https://forum.luminous-landscape.com/index.php?topic=118987.0)). `i1_2033` fits into 2x A4 (6x6), 3x A4 (9x6), 1x A3 (6x6) or 2x A3 (9x6).
 
-[i1_2033 image]
+![i1 2033 Patch Set in Lab](i1_2033_Lab.png)
 
 | patch set name | A4 pages (patch size) |
 | --- | --- |
