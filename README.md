@@ -17,11 +17,11 @@ ICC profile creation steps are:
 
 ## Creating the patch set
 
-I create the patch sets using i1Profiler. I save the i1Profiler patch set as iProfiler CGATS .txt file. See [Patch Sets/README.md](Patch Sets/README.md) for more info.
+I create the patch sets using i1Profiler. I save the i1Profiler patch set as iProfiler CGATS .txt file. See [Patch Sets/README.md](Patch%20Sets/README.md) for more info.
 
 ## Creating and printing the test chart
 
-I create the test charts (TIF files) using i1Profiler by loading the patch set's txt file. Since I am using X-Rite i1iSis XL Chart Reader, I can use A4, A3 or A3+ test charts. I check and prepare the TIF files using Adobe Photoshop, see [Test Charts/README.md](Test Charts/README.md) for more info.
+I create the test charts (TIF files) using i1Profiler by loading the patch set's txt file. Since I am using X-Rite i1iSis XL Chart Reader, I can use A4, A3 or A3+ test charts. I check and prepare the TIF files using Adobe Photoshop, see [Test Charts/README.md](Test%20Charts/README.md) for more info.
 
 I use ColorSync utility in macOS to print the test charts.
 
