@@ -2,13 +2,18 @@
 
 This repository contains the patch sets, test charts, measurements and ICC profiles I created for my [Epson SureColor P800 (SC-P800)](docs/P800-brochure.pdf) printer using [X-Rite i1iSis XL](docs/i1iSis-brochure.pdf) automated chart reader using [X-Rite i1Profiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler) and [Argyll CMS](https://www.argyllcms.com/).
 
-The general information here about the printer profiling can be applied to any (RGB) printer. I do not know how CMYK printers differ.
+The general information here about the printer profiling can be applied to any RGB printer. I do not have any experience with CMYK printers.
 
 # Overview
 
-ICC profile creation steps are: creating the patch set, creating and printing the test chart, measuring the test chart and creating the ICC profile.
+ICC profile creation steps are:
 
-*i1Profiler mentioned below is not a free software, but the features I am using and described below can be used freely in demo mode.*
+- creating the patch set
+- creating and printing the test chart
+- measuring the test chart
+- creating the ICC profile
+
+*i1Profiler mentioned below is not a free software. However, creating the patchset and creating the test charts can be used in demo mode. Creating the ICC profile requires a license.*
 
 - I create the patchsets either using i1Profiler or Argyll CMS's [targen](https://www.argyllcms.com/doc/targen.html). I save the i1Profiler patch set as iProfiler CGATS .txt file. targen creates a .ti1 file and then I use my [scaleti1rgb utility](scaleti1rgb.py) utility to scale the RGB values in ti1 file from 0-100 (what targen generates) to 0-255 (what i1Profiler expects). This converts the ti1 file to a txt file. I guided ChatGPT to write this utility.
 
@@ -19,6 +24,8 @@ ICC profile creation steps are: creating the patch set, creating and printing th
 - After the prints are dried, I measure the printed test charts using [X-Rite i1iSis XL Automated Chart Reader](https://xritephoto.com/documents/literature/en/L11-213_iSis_Brochure_en.pdf) in dual scan mode (M0 and M2), using i1Profiler. I save the measurements in i1Profiler CGATS Spectral format, and this creates two files, M0.txt and M2.txt. I usually measure the targets once after ~1h to be sure they can be read by i1iSis, and do the final measurement after 24h.
 
 - I use [Argyll CMS colprof utility](https://www.argyllcms.com/) utility to create three profiles: one for M0 measurements without FWA compensation, one for M0 measurements with FWA compensation and one for M2 measurements without FWA compensation.
+
+- I also use i1Profiler to create the profiles.
 
 # Design of Patch Sets and Test Charts
 
@@ -92,7 +99,7 @@ The test chart is created in iProfiler by setting up:
 
 Thus, a test chart layout depends on the page size, printer and patch size. The test chart file name is an extension of the patch set, adding the page size, printer and patch size to that. For example, `i1_2033.txt` patch set might have a test chart base name `i1_2033_A4_P800_6x6` meaning an A4 page on SC-P800 and a patch size of 6x6mm. There is going to be a `.txf` file with this basename, and also one or more `.tif` files for each page of the color charts. When there are multiple pages, the basename also has a suffix `_X_Y` where X is the page number and Y is the total number of pages. For example, for the example before, `i1_2033_A4_P800_6x6_1_2.tif` would be the first page of this two pages color chart. The `.txf` file can be used to load this color chart back to i1Profiler before doing a measurement because the measurement needs to know both the patch set (txf file contains the patch set values) and the layout of color chart.
 
-i1Profiler by default adds the base name of the test chart to the test chart itself. It is double check. It is also possible to add layout information a barcode that can be automatically read by i1iSis but I am not using this feature.
+i1Profiler by default adds the base name of the test chart to the test chart (header). It is a double check. It is also possible to add layout information a barcode that can be automatically read by i1iSis but I am not using this feature.
 
 This repository only contains ICC profiles for SC-P800, but I decided to still keep the printer model in the base name to eliminate confusion.
 
@@ -119,8 +126,8 @@ I do not plan to keep all of the temporary files (measurements after ~1h), but i
 
 ## Generating the Test Charts
 
-iProfiler's test chart generation is a bit odd. It has a margin setup but no concept of reduced quality zone. Also, the top part of the test chart before the patches has a larger area than the bottom after the patches. However, the bottom reduced quality zone can be larger than the top for some printers (like SC-P800). So the test chart generated with iProfiler cannot or should not be used directly.
+iProfiler's test chart generation is a bit odd. It has a margin setup but no concept of reduced quality zone. Also, the top part of the test chart before the patches has a larger area than the bottom after the patches. However, the bottom reduced quality zone can be larger than the top for some printers (like SC-P800). So the test chart generated with iProfiler should not be used directly or you should be aware of these issues.
 
 ## Printing the Test Charts
 
-Surprisingly printing a test chart (without an extra non-free software) is more difficult than it sounds. The difficulty is the test chart should be printed as it is without any color change/management applied. In the past, it was possible to do this with Adobe Photoshop, however Adobe removed this from Photoshop. A very common and traditional way is to use [Adobe Color Printer Utility](https://helpx.adobe.com/photoshop/kb/no-color-management-option-missing.html). However, ACPU has a scaling problem in Windows (it changes the scale of the test chart) and ACPU is not supported on macOS 10.15 and later. Unfortunately, this makes it not straight-forward to print a test chart on Windows. On macOS, there is a simple solution. ColorSync utility supports printing test charts.
+Surprisingly printing a test chart (without an extra non-free software) is more difficult than it sounds. The difficulty is the test chart should be printed as it is without any color change/management applied. In the past, it was possible to do this with Adobe Photoshop, however Adobe removed this from Photoshop. A very common and traditional way is to use [Adobe Color Printer Utility](https://helpx.adobe.com/photoshop/kb/no-color-management-option-missing.html). However, ACPU has a scaling problem in Windows (it changes the scale of the test chart) and ACPU is not supported on macOS 10.15 and later. Unfortunately, this makes it not straight-forward to print a test chart on Windows. On macOS, there is a very simple solution. ColorSync utility supports printing test charts.
