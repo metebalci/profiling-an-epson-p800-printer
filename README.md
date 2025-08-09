@@ -63,7 +63,7 @@ I generated a few patch sets.
 
 - I use only one patch set from i1Profiler. It is the default patch set in the current i1Profiler (3.8.4) (when Advanced > Printer > Profiling is opened) which has 2033 patches. The scrambled (randomized) set is `i1_2033.txt`. The patches in this set are semi-regularly sampled including a number of neutral and near-neutral patches (155 according to [this post](https://forum.luminous-landscape.com/index.php?topic=118987.0)). `i1_2033` fits into 2x A4 (6x6), 3x A4 (9x6), 1x A3 (6x6) or 2x A3 (9x6).
 
-![i1 2033 Patch Set in Lab](https://github.com/metebalci/icc-profiles-sc-p800/blob/master/i1_2033_Lab.png)
+![i1 2033 Patch Set in Lab](https://github.com/metebalci/icc-profiles-sc-p800/blob/main/i1_2033_Lab.png)
 
 | patch set name | A4 pages (patch size) |
 | --- | --- |
