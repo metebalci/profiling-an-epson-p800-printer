@@ -42,7 +42,7 @@ MEASUREMENTS_M2="${3}_M2"
 INFO="Epson SC-P800"
 COPYRIGHT="Copyright(C) Mete Balci. 2025"
 
-AdobeRGB1998="../refs/AdobeRGB1998.icc"
+AdobeRGB1998="AdobeRGB1998.icc"
 
 QUALITY="h"
 SOURCE_GAMUT="-S ${AdobeRGB1998}"

@@ -2,7 +2,7 @@ WORK-IN-PROGRESS
 
 # Profiling an Epson P800 Printer
 
-This repository contains the code and the data for my blog post: [Profiling an Epson P800 Printer](https://metebalci.com/blog/profiling-an-epson-p800-printer/).
+This repository contains the code and the data for my blog post (not yet published): [Profiling an Epson P800 Printer](https://metebalci.com/blog/profiling-an-epson-p800-printer/).
 
 This repository contains the patch sets, test charts, measurements and ICC profiles I created for [Epson SureColor P800 (SC-P800)](docs/P800-brochure.pdf) printer using [X-Rite i1iSis XL](docs/i1iSis-brochure.pdf) automated chart reader using [X-Rite i1Profiler](https://www.xrite.com/categories/formulation-and-quality-assurance-software/i1profiler) and [Argyll CMS](https://www.argyllcms.com/).
 
