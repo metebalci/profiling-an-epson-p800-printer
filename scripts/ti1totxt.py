@@ -2,6 +2,9 @@
 
 import argparse
 import os
+import random
+import shutil
+import sys
 
 
 def format_value(value):
@@ -9,6 +12,48 @@ def format_value(value):
     formatted = f"{value:.7f}"
     # Trim from the right to keep at most 8 characters total (incl. dot)
     return formatted[:8]
+
+
+def randomize_ti1_patches(input_file, output_file):
+    """Randomizes patch locations within sets in a .ti1 file."""
+    with open(input_file, "r") as f:
+        lines = f.readlines()
+
+    # Locate data section
+    try:
+        start_idx = lines.index("BEGIN_DATA\n") + 1
+        end_idx = lines.index("END_DATA\n")
+    except ValueError:
+        raise ValueError("BEGIN_DATA or END_DATA not found in file.")
+
+    header = lines[:start_idx]
+    footer = lines[end_idx:]
+
+    # Extract data lines
+    data_lines = lines[start_idx:end_idx]
+
+    # Get number of sets
+    num_sets = 1
+    for line in lines:
+        if line.startswith("NUMBER_OF_SETS_OF_PATCHES"):
+            num_sets = int(line.strip().split()[1])
+            break
+
+    # Split into sets
+    patches_per_set = len(data_lines) // num_sets
+    sets = [data_lines[i * patches_per_set:(i + 1) * patches_per_set] for i in range(num_sets)]
+
+    # Shuffle within each set (deterministic with seed based on number of patches)
+    random.seed(len(data_lines))
+    for s in sets:
+        random.shuffle(s)
+
+    # Flatten
+    shuffled_data = [line for s in sets for line in s]
+
+    # Write output
+    with open(output_file, "w") as f:
+        f.writelines(header + shuffled_data + footer)
 
 
 def rescale_ti1_rgb(input_file, output_file):
@@ -64,16 +109,32 @@ def rescale_ti1_rgb(input_file, output_file):
     with open(output_file, "w") as f:
         f.writelines(out_lines)
 
-    print(f"✅ Rescaled RGB values and saved to: {output_file}")
-
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Rescale RGB values in a .ti1 file from 0–100 to 0–255 for i1Profiler.")
+    parser = argparse.ArgumentParser(description="Rescale RGB values and optionally randomize patch locations in targen's .ti1 file for i1Profiler.")
     parser.add_argument("input", help="Input .ti1 file")
-    parser.add_argument("-o", "--output", help="Output file (default: input_basename.txt)")
+    parser.add_argument("-r", "--randomize", action="store_true", help="Randomize patch locations (creates a backup with .bak extension)")
 
     args = parser.parse_args()
-    default_output = os.path.splitext(args.input)[0] + ".txt"
-    output_file = args.output or default_output
+    input_file = args.input
+    output_file = os.path.splitext(input_file)[0] + ".txt"
 
-    rescale_ti1_rgb(args.input, output_file)
+    try:
+        if args.randomize:
+            # Create backup
+            backup_file = input_file + ".bak"
+            shutil.copy2(input_file, backup_file)
+            
+            # Randomize patches in the original file
+            randomize_ti1_patches(input_file, input_file)
+
+        rescale_ti1_rgb(input_file, output_file)
+    except FileNotFoundError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+    except ValueError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
